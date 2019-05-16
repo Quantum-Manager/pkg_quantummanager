@@ -12,7 +12,9 @@
     <description>PKG_QUANTUMMANAGER_DESCRIPTION</description>
     <scriptfile>script.php</scriptfile>
     <languages folder="language">
+        <language tag="en-GB">en-GB/en-GB.pkg_quantummanager.ini</language>
         <language tag="en-GB">en-GB/en-GB.pkg_quantummanager.sys.ini</language>
+        <language tag="ru-RU">ru-RU/ru-RU.pkg_quantummanager.ini</language>
         <language tag="ru-RU">ru-RU/ru-RU.pkg_quantummanager.sys.ini</language>
     </languages>
     <files>
