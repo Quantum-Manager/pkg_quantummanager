@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<extension version="3.8" type="package" method="upgrade">
+    <name>PKG_QUANTUMMANAGER</name>
+    <packagename>quantummanager</packagename>
+    <author>Cymbal</author>
+    <creationDate>16.05.2019</creationDate>
+    <copyright>Copyright (C) 2019 "Delo Design". All rights reserved.</copyright>
+    <license>GNU General Public License version 2 or later; see LICENSE.txt</license>
+    <authorEmail>cymbal@delo-design.ru</authorEmail>
+    <authorUrl>https://delo-design.ru</authorUrl>
+    <version>1.0</version>
+    <description>PKG_QUANTUMMANAGER_DESCRIPTION</description>
+    <scriptfile>script.php</scriptfile>
+    <languages folder="language">
+        <language tag="en-GB">en-GB/en-GB.pkg_quantummanager.sys.ini</language>
+        <language tag="ru-RU">ru-RU/ru-RU.pkg_quantummanager.sys.ini</language>
+    </languages>
+    <files>
+        <file type="component" id="com_quantummanager" download="https://hika.su/update/free/com_quantummanager.zip">com_quantummanager.zip</file>
+        <file type="library" id="jinterventionimage" download="https://hika.su/update/free/lib_jinterventionimage.zip">lib_jinterventionimage.zip</file>
+        <file type="plugin" group="system" id="quantummanagermedia" download="https://hika.su/update/free/plg_quantummanagermedia.zip">plg_quantummanagermedia.zip</file>
+    </files>
+</extension>
