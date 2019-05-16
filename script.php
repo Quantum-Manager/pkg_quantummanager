@@ -33,7 +33,7 @@ class pkg_QuantummanagerInstallerScript
 	 *
 	 * @since  0.0.1
 	 */
-	protected $minimumJoomla = '3.8.0';
+	protected $minimumJoomla = '3.9.0';
 
 	/**
 	 * Method to check compatible.
