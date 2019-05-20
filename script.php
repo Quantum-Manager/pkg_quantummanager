@@ -36,6 +36,14 @@ class pkg_QuantummanagerInstallerScript
 	protected $minimumJoomla = '3.9.0';
 
 	/**
+	 * Extensions for php
+	 * @var array
+	 */
+	protected $extensions = [
+		'fileinfo'
+	];
+
+	/**
 	 * Method to check compatible.
 	 *
 	 * @param   string            $type    Type of PostFlight action.
@@ -82,7 +90,7 @@ class pkg_QuantummanagerInstallerScript
 		// Check PHP
 		if (!(version_compare(PHP_VERSION, $this->minimumPhp) >= 0))
 		{
-			$app->enqueueMessage(Text::sprintf('PKG_RIEX_ERROR_COMPATIBLE_PHP', $this->minimumPhp),
+			$app->enqueueMessage(Text::sprintf('PKG_QUANTUMMANAGER_ERROR_COMPATIBLE_PHP', $this->minimumPhp),
 				'error');
 
 			return false;
@@ -91,14 +99,32 @@ class pkg_QuantummanagerInstallerScript
 		// Check joomla version
 		if (!$jversion->isCompatible($this->minimumJoomla))
 		{
-			$app->enqueueMessage(Text::sprintf('PKG_RIEX_ERROR_COMPATIBLE_JOOMLA', $this->minimumJoomla),
+			$app->enqueueMessage(Text::sprintf('PKG_QUANTUMMANAGER_ERROR_COMPATIBLE_JOOMLA', $this->minimumJoomla),
 				'error');
 
 			return false;
 		}
 
+		//Check extension
+		$extensionsNotLoaded = [];
+		foreach ($this->extensions as $extension)
+		{
+			if(!extension_loaded($extension))
+			{
+				$extensionsNotLoaded[] = $extension;
+			}
+		}
+
+		if(count($extensionsNotLoaded))
+		{
+			$app->enqueueMessage(Text::sprintf('PKG_QUANTUMMANAGER_ERROR_EXTENSIONS', implode(',', $extensionsNotLoaded)),
+				'error');
+			return false;
+		}
+
 		return true;
 	}
+
 
 	/**
 	 * Method to download remotes.
@@ -125,4 +151,6 @@ class pkg_QuantummanagerInstallerScript
 			}
 		}
 	}
+
+
 }
