@@ -8,7 +8,7 @@
     <license>GNU General Public License version 2 or later; see LICENSE.txt</license>
     <authorEmail>cymbal@delo-design.ru</authorEmail>
     <authorUrl>https://delo-design.ru</authorUrl>
-    <version>1.0</version>
+    <version>1.0.1</version>
     <description>PKG_QUANTUMMANAGER_DESCRIPTION</description>
     <scriptfile>script.php</scriptfile>
     <languages folder="language">
