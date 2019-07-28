@@ -8,7 +8,7 @@
     <license>GNU General Public License version 3 or later; see license.txt</license>
     <authorEmail>cymbal@delo-design.ru</authorEmail>
     <authorUrl>https://www.norrnext.com</authorUrl>
-    <version>1.0.3</version>
+    <version>1.0.4</version>
     <description>PKG_QUANTUMMANAGER_DESCRIPTION</description>
     <scriptfile>script.php</scriptfile>
     <languages folder="language">
@@ -21,6 +21,7 @@
         <file type="component" id="com_quantummanager" download="https://hika.su/update/free/com_quantummanager.zip">com_quantummanager.zip</file>
         <file type="library" id="jinterventionimage" download="https://hika.su/update/free/lib_jinterventionimage.zip">lib_jinterventionimage.zip</file>
         <file type="plugin" group="system" id="quantummanagermedia" download="https://hika.su/update/free/plg_quantummanagermedia.zip">plg_quantummanagermedia.zip</file>
+        <file type="plugin" group="system" id="quantummanagercommedia" download="https://hika.su/update/free/plg_quantummanagercommedia.zip">plg_quantummanagercommedia.zip</file>
         <file type="plugin" group="quickicon" id="quantummanagericon" download="https://hika.su/update/free/plg_quantummanagericon.zip">plg_quantummanagericon.zip</file>
     </files>
 </extension>
