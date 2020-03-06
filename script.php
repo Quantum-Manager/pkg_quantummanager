@@ -24,7 +24,7 @@ class pkg_QuantummanagerInstallerScript
 	 *
 	 * @since  0.0.1
 	 */
-	protected $minimumPhp = '7.0';
+	protected $minimumPhp = '7.1';
 
 	/**
 	 * Minimum Joomla version required to install the extension.
@@ -55,13 +55,22 @@ class pkg_QuantummanagerInstallerScript
 	 *
 	 * @since  0.0.1
 	 */
-	function preflight($type, $parent)
+	public function preflight($type, $parent)
 	{
 		// Check compatible
 		if (!$this->checkCompatible()) return false;
 
 		//Download remotes
 		$this->downloadRemotes($parent);
+	}
+
+	/**
+	 * @param $type
+	 * @param $parent
+	 */
+	public function update(JAdapterInstance $adapter)
+	{
+		$this->update142();
 	}
 
 	/**
@@ -125,7 +134,6 @@ class pkg_QuantummanagerInstallerScript
 		return true;
 	}
 
-
 	/**
 	 * Method to download remotes.
 	 *
@@ -152,5 +160,22 @@ class pkg_QuantummanagerInstallerScript
 		}
 	}
 
+	protected function update142()
+	{
+		$db = Factory::getDBO();
+		$query = $db->getQuery(true)
+			->select($db->quoteName(['extension_id']))
+			->from('#__extensions')
+			->where('element =' . $db->quote('quantummanagercontent'))
+			->where('folder =' . $db->quote('editors-xtd'));
+		$extension = $db->setQuery($query)->loadObject();
+
+		if(isset($extension->extension_id) && ((int)$extension->extension_id > 0))
+		{
+			$eid = $extension->extension_id;
+			$model = JModelLegacy::getInstance('Manage', 'InstallerModel', array('ignore_request' => true));
+			$model->remove($eid);
+		}
+	}
 
 }
