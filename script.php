@@ -11,9 +11,11 @@
 defined('_JEXEC') or die;
 
 use Joomla\CMS\Factory;
+use Joomla\CMS\Installer\Adapter\PackageAdapter;
 use Joomla\CMS\Installer\InstallerAdapter;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Version;
+use Joomla\CMS\Installer\Installer;
 
 class pkg_QuantummanagerInstallerScript
 {
@@ -64,14 +66,15 @@ class pkg_QuantummanagerInstallerScript
 		$this->downloadRemotes($parent);
 	}
 
-	/**
-	 * @param $type
-	 * @param $parent
-	 */
-	public function update(JAdapterInstance $adapter)
+
+	public function postflight($type, $parent)
 	{
-		$this->update142();
+		if ($type === 'update')
+		{
+			$this->update142();
+		}
 	}
+
 
 	/**
 	 * Method to check compatible.
@@ -172,9 +175,8 @@ class pkg_QuantummanagerInstallerScript
 
 		if(isset($extension->extension_id) && ((int)$extension->extension_id > 0))
 		{
-			$eid = $extension->extension_id;
-			$model = JModelLegacy::getInstance('Manage', 'InstallerModel', array('ignore_request' => true));
-			$model->remove($eid);
+			$installer = Installer::getInstance();
+			$installer->uninstall('plugin', (int)$extension->extension_id);
 		}
 	}
 
