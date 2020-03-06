@@ -178,6 +178,21 @@ class pkg_QuantummanagerInstallerScript
 			$installer = Installer::getInstance();
 			$installer->uninstall('plugin', (int)$extension->extension_id);
 		}
+
+		$db = Factory::getDBO();
+		$query = $db->getQuery(true)
+			->select($db->quoteName(['extension_id']))
+			->from('#__extensions')
+			->where('element =' . $db->quote('quantummanagercommedia'))
+			->where('folder =' . $db->quote('system'));
+		$extension = $db->setQuery($query)->loadObject();
+
+		if(isset($extension->extension_id) && ((int)$extension->extension_id > 0))
+		{
+			$installer = Installer::getInstance();
+			$installer->uninstall('plugin', (int)$extension->extension_id);
+		}
+
 	}
 
 }
