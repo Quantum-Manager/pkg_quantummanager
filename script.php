@@ -72,22 +72,18 @@ class pkg_QuantummanagerInstallerScript
 
 	public function postflight($type, $parent)
 	{
-		if ($type === 'install')
+		$msg = '';
+		$result = $this->installLibFields($parent);
+		if ($result !== true)
 		{
-			$msg = '';
-			$result = $this->installLibFields($parent);
-			if ($result !== true)
-			{
-				$msg .= Text::sprintf('PKG_QUANTUMMANAGER_LIBFIELDS_INSTALLATION_ERROR', $result);
-			}
-
-			if ($msg)
-			{
-				Factory::getApplication()->enqueueMessage($msg, 'error');
-				return false;
-			}
+			$msg .= Text::sprintf('PKG_QUANTUMMANAGER_LIBFIELDS_INSTALLATION_ERROR', $result);
 		}
 
+		if ($msg)
+		{
+			Factory::getApplication()->enqueueMessage($msg, 'error');
+			return false;
+		}
 
 		if ($type === 'update')
 		{
