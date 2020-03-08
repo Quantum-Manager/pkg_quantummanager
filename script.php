@@ -16,6 +16,9 @@ use Joomla\CMS\Installer\InstallerAdapter;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Version;
 use Joomla\CMS\Installer\Installer;
+use Joomla\CMS\Filesystem\Path;
+use Joomla\CMS\Installer\InstallerHelper;
+use Joomla\Archive\Archive;
 
 class pkg_QuantummanagerInstallerScript
 {
@@ -69,6 +72,23 @@ class pkg_QuantummanagerInstallerScript
 
 	public function postflight($type, $parent)
 	{
+		if ($type === 'install')
+		{
+			$msg = '';
+			$result = $this->installLibFields($parent);
+			if ($result !== true)
+			{
+				$msg .= Text::sprintf('PKG_QUANTUMMANAGER_LIBFIELDS_INSTALLATION_ERROR', $result);
+			}
+
+			if ($msg)
+			{
+				Factory::getApplication()->enqueueMessage($msg, 'error');
+				return false;
+			}
+		}
+
+
 		if ($type === 'update')
 		{
 			$this->update142();
@@ -193,6 +213,60 @@ class pkg_QuantummanagerInstallerScript
 			$installer->uninstall('plugin', (int)$extension->extension_id);
 		}
 
+	}
+
+	protected function installLibFields($parent)
+	{
+
+		$tmp = Factory::getConfig()->get('tmp_path');
+		$libFieldsFile = 'https://hika.su/update/free/lib_fields.zip';
+		$tmpFile = Path::clean($tmp . '/lib_fields.zip');
+		$extDir = Path::clean($tmp . '/' . uniqid('install_'));
+
+		$contents = file_get_contents($libFieldsFile);
+		if ($contents === false)
+		{
+			return Text::sprintf('PKG_QUANTUMMANAGER_LIBFIELDS_IE_FAILED_DOWNLOAD', $libFieldsFile);
+		}
+
+		$resultContents = file_put_contents($tmpFile, $contents);
+		if ($resultContents == false)
+		{
+			return Text::sprintf('PKG_QUANTUMMANAGER_LIBFIELDS_IE_FAILED_INSTALLATION', $tmpFile);
+		}
+
+		if (!file_exists($tmpFile))
+		{
+			return Text::sprintf('PKG_QUANTUMMANAGER_LIBFIELDS_IE_NOT_EXISTS', $tmpFile);
+		}
+
+		$archive = new Archive(['tmp_path' => $tmp]);
+		try
+		{
+			$archive->extract($tmpFile, $extDir);
+		}
+		catch (\Exception $e)
+		{
+			return Text::sprintf('PKG_QUANTUMMANAGER_LIBFIELDS_IE_FAILER_UNZIP', $tmpFile, $extDir, $e->getMesage());
+		}
+
+		$installer = new Installer();
+		$installer->setPath('source', $extDir);
+		if (!$installer->findManifest())
+		{
+			InstallerHelper::cleanupInstall($tmpFile, $extDir);
+			return Text::_('PKG_QUANTUMMANAGER_LIBFIELDS_IE_INCORRECT_MANIFEST');
+		}
+
+		if (!$installer->install($extDir))
+		{
+			InstallerHelper::cleanupInstall($tmpFile, $extDir);
+			return Text::_('PKG_QUANTUMMANAGER_LIBFIELDS_IE_INSTALLER_ERROR');
+		}
+
+		InstallerHelper::cleanupInstall($tmpFile, $extDir);
+
+		return true;
 	}
 
 }

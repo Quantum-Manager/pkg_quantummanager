@@ -20,7 +20,6 @@
     <files>
         <file type="component" id="com_quantummanager">com_quantummanager.zip</file>
         <file type="library" id="jinterventionimage">lib_jinterventionimage.zip</file>
-        <file type="library" id="lib_fields">lib_fields.zip</file>
         <file type="plugin" group="system" id="quantummanagermedia">plg_quantummanagermedia.zip</file>
         <file type="plugin" group="system" id="quantumyoothemepro">plg_quantumyoothemepro.zip</file>
         <file type="plugin" group="editors-xtd" id="quantummanagerbutton">plg_quantummanagerbutton.zip</file>
