@@ -87,7 +87,7 @@ class pkg_QuantummanagerInstallerScript
 
 		if ($type === 'update')
 		{
-			$this->update142();
+			$this->update150();
 		}
 	}
 
@@ -179,7 +179,7 @@ class pkg_QuantummanagerInstallerScript
 		}
 	}
 
-	protected function update142()
+	protected function update150()
 	{
 		$db = Factory::getDBO();
 		$query = $db->getQuery(true)
