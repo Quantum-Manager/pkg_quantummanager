@@ -8,7 +8,7 @@
     <license>GNU General Public License version 3 or later; see license.txt</license>
     <authorEmail>cymbal@delo-design.ru</authorEmail>
     <authorUrl>https://www.norrnext.com</authorUrl>
-    <version>1.5.1</version>
+    <version>1.5.2</version>
     <description>PKG_QUANTUMMANAGER_DESCRIPTION</description>
     <scriptfile>script.php</scriptfile>
     <languages folder="language">
