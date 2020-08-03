@@ -26,6 +26,7 @@
         <file type="plugin" group="editors-xtd" id="quantummanagerbutton">plg_quantummanagerbutton.zip</file>
         <file type="plugin" group="content" id="quantummanagercontent">plg_quantummanagercontent.zip</file>
         <file type="plugin" group="quickicon" id="quantummanagericon">plg_quantummanagericon.zip</file>
+        <file type="plugin" group="system" id="quantummanagerconfig">plg_quantummanagerconfig.zip</file>
     </files>
     <updateservers>
         <server type="extension" priority="1" name="Quantum Manager package">https://hika.su/update/free/pkg_quantummanager.xml</server>
