@@ -108,7 +108,7 @@ class pkg_QuantummanagerInstallerScript
 		// Check old Joomla
 		if (!class_exists('Joomla\CMS\Version'))
 		{
-			JFactory::getApplication()->enqueueMessage(JText::sprintf('PKG_QUANTUMMANAGER_ERROR_COMPATIBLE_JOOMLA',
+			Factory::getApplication()->enqueueMessage(Text::sprintf('PKG_QUANTUMMANAGER_ERROR_COMPATIBLE_JOOMLA',
 				$this->minimumJoomla), 'error');
 
 			return false;
