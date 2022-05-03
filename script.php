@@ -64,19 +64,18 @@ class pkg_QuantummanagerInstallerScript
 	 */
 	public function preflight($type, $parent)
 	{
-		if ($type !== 'install')
+		if ($type === 'install')
 		{
-			return;
+			// Check compatible
+			if (!$this->checkCompatible())
+			{
+				return false;
+			}
+
+			//Download remotes
+			$this->downloadRemotes($parent);
 		}
 
-		// Check compatible
-		if (!$this->checkCompatible())
-		{
-			return false;
-		}
-
-		//Download remotes
-		$this->downloadRemotes($parent);
 	}
 
 
