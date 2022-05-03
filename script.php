@@ -81,24 +81,30 @@ class pkg_QuantummanagerInstallerScript
 
 	public function postflight($type, $parent)
 	{
-		$msg    = '';
-		$result = $this->installLibFields($parent);
-		if ($result !== true)
+		if ($type === 'update' || $type === 'install')
 		{
-			$msg .= Text::sprintf('PKG_QUANTUMMANAGER_LIBFIELDS_INSTALLATION_ERROR', $result);
+			$msg    = '';
+			$result = $this->installLibFields($parent);
+
+			if ($result !== true)
+			{
+				$msg .= Text::sprintf('PKG_QUANTUMMANAGER_LIBFIELDS_INSTALLATION_ERROR', $result);
+			}
+
+			if ($msg)
+			{
+				Factory::getApplication()->enqueueMessage($msg, 'error');
+
+				return false;
+			}
+
+			if ($type === 'update')
+			{
+				$this->update150();
+			}
+
 		}
 
-		if ($msg)
-		{
-			Factory::getApplication()->enqueueMessage($msg, 'error');
-
-			return false;
-		}
-
-		if ($type === 'update')
-		{
-			$this->update150();
-		}
 	}
 
 
@@ -178,7 +184,11 @@ class pkg_QuantummanagerInstallerScript
 		$attributes = $parent->getParent()->manifest->xpath('files');
 		$source     = $parent->getParent()->getPath('source');
 
-		if (!is_array($attributes) || empty($attributes[0])) return;
+		if (!is_array($attributes) || empty($attributes[0]))
+		{
+			return;
+		}
+
 		foreach ($attributes[0] as $type => $value)
 		{
 			if (!empty($value->attributes()->download) && !empty($value[0]))
