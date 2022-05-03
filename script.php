@@ -10,15 +10,15 @@
 
 defined('_JEXEC') or die;
 
+use Joomla\Archive\Archive;
 use Joomla\CMS\Factory;
+use Joomla\CMS\Filesystem\Path;
 use Joomla\CMS\Installer\Adapter\PackageAdapter;
+use Joomla\CMS\Installer\Installer;
 use Joomla\CMS\Installer\InstallerAdapter;
+use Joomla\CMS\Installer\InstallerHelper;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Version;
-use Joomla\CMS\Installer\Installer;
-use Joomla\CMS\Filesystem\Path;
-use Joomla\CMS\Installer\InstallerHelper;
-use Joomla\Archive\Archive;
 
 class pkg_QuantummanagerInstallerScript
 {
@@ -56,16 +56,24 @@ class pkg_QuantummanagerInstallerScript
 	 * @param   string            $type    Type of PostFlight action.
 	 * @param   InstallerAdapter  $parent  Parent object calling object.
 	 *
-	 * @throws  Exception
-	 *
 	 * @return  boolean  Compatible current version or not.
+	 *
+	 * @throws  Exception
 	 *
 	 * @since  0.0.1
 	 */
 	public function preflight($type, $parent)
 	{
+		if ($type !== 'install')
+		{
+			return;
+		}
+
 		// Check compatible
-		if (!$this->checkCompatible()) return false;
+		if (!$this->checkCompatible())
+		{
+			return false;
+		}
 
 		//Download remotes
 		$this->downloadRemotes($parent);
@@ -74,7 +82,7 @@ class pkg_QuantummanagerInstallerScript
 
 	public function postflight($type, $parent)
 	{
-		$msg = '';
+		$msg    = '';
 		$result = $this->installLibFields($parent);
 		if ($result !== true)
 		{
@@ -84,6 +92,7 @@ class pkg_QuantummanagerInstallerScript
 		if ($msg)
 		{
 			Factory::getApplication()->enqueueMessage($msg, 'error');
+
 			return false;
 		}
 
@@ -97,9 +106,9 @@ class pkg_QuantummanagerInstallerScript
 	/**
 	 * Method to check compatible.
 	 *
-	 * @throws  Exception
-	 *
 	 * @return  bool True if compatible.
+	 *
+	 * @throws  Exception
 	 *
 	 * @since  __DEPLOY_VERSION__
 	 */
@@ -139,16 +148,17 @@ class pkg_QuantummanagerInstallerScript
 		$extensionsNotLoaded = [];
 		foreach ($this->extensions as $extension)
 		{
-			if(!extension_loaded($extension))
+			if (!extension_loaded($extension))
 			{
 				$extensionsNotLoaded[] = $extension;
 			}
 		}
 
-		if(count($extensionsNotLoaded))
+		if (count($extensionsNotLoaded))
 		{
 			$app->enqueueMessage(Text::sprintf('PKG_QUANTUMMANAGER_ERROR_EXTENSIONS', implode(',', $extensionsNotLoaded)),
 				'error');
+
 			return false;
 		}
 
@@ -183,32 +193,32 @@ class pkg_QuantummanagerInstallerScript
 
 	protected function update150()
 	{
-		$db = Factory::getDBO();
-		$query = $db->getQuery(true)
+		$db        = Factory::getDBO();
+		$query     = $db->getQuery(true)
 			->select($db->quoteName(['extension_id']))
 			->from('#__extensions')
 			->where('element =' . $db->quote('quantummanagercontent'))
 			->where('folder =' . $db->quote('editors-xtd'));
 		$extension = $db->setQuery($query)->loadObject();
 
-		if(isset($extension->extension_id) && ((int)$extension->extension_id > 0))
+		if (isset($extension->extension_id) && ((int) $extension->extension_id > 0))
 		{
 			$installer = Installer::getInstance();
-			$installer->uninstall('plugin', (int)$extension->extension_id);
+			$installer->uninstall('plugin', (int) $extension->extension_id);
 		}
 
-		$db = Factory::getDBO();
-		$query = $db->getQuery(true)
+		$db        = Factory::getDBO();
+		$query     = $db->getQuery(true)
 			->select($db->quoteName(['extension_id']))
 			->from('#__extensions')
 			->where('element =' . $db->quote('quantummanagercommedia'))
 			->where('folder =' . $db->quote('system'));
 		$extension = $db->setQuery($query)->loadObject();
 
-		if(isset($extension->extension_id) && ((int)$extension->extension_id > 0))
+		if (isset($extension->extension_id) && ((int) $extension->extension_id > 0))
 		{
 			$installer = Installer::getInstance();
-			$installer->uninstall('plugin', (int)$extension->extension_id);
+			$installer->uninstall('plugin', (int) $extension->extension_id);
 		}
 
 	}
@@ -216,10 +226,10 @@ class pkg_QuantummanagerInstallerScript
 	protected function installLibFields($parent)
 	{
 
-		$tmp = Factory::getConfig()->get('tmp_path');
+		$tmp           = Factory::getConfig()->get('tmp_path');
 		$libFieldsFile = 'https://hika.su/update/free/lib_fields.zip';
-		$tmpFile = Path::clean($tmp . '/lib_fields.zip');
-		$extDir = Path::clean($tmp . '/' . uniqid('install_'));
+		$tmpFile       = Path::clean($tmp . '/lib_fields.zip');
+		$extDir        = Path::clean($tmp . '/' . uniqid('install_'));
 
 		$contents = file_get_contents($libFieldsFile);
 		if ($contents === false)
@@ -253,12 +263,14 @@ class pkg_QuantummanagerInstallerScript
 		if (!$installer->findManifest())
 		{
 			InstallerHelper::cleanupInstall($tmpFile, $extDir);
+
 			return Text::_('PKG_QUANTUMMANAGER_LIBFIELDS_IE_INCORRECT_MANIFEST');
 		}
 
 		if (!$installer->install($extDir))
 		{
 			InstallerHelper::cleanupInstall($tmpFile, $extDir);
+
 			return Text::_('PKG_QUANTUMMANAGER_LIBFIELDS_IE_INSTALLER_ERROR');
 		}
 
