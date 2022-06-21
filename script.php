@@ -88,7 +88,7 @@ class pkg_QuantummanagerInstallerScript
 
 			if ($result !== true)
 			{
-				$msg .= Text::sprintf('PKG_QUANTUMMANAGER_LIBFIELDS_INSTALLATION_ERROR', $result);
+				$msg .= Text::sprintf('PKG_QUANTUMMANAGER_LIBFIELDS_INSTALLATION_ERROR', (string) $result);
 			}
 
 			if ($msg)
