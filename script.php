@@ -236,7 +236,7 @@ class pkg_QuantummanagerInstallerScript
 	{
 
 		$tmp           = Factory::getConfig()->get('tmp_path');
-		$libFieldsFile = 'https://hika.su/update/free/lib_fields.zip';
+		$libFieldsFile = 'https://github.com/JPathRu/lib_fields/releases/latest/download/lib_fields.zip';
 		$tmpFile       = Path::clean($tmp . '/lib_fields.zip');
 		$extDir        = Path::clean($tmp . '/' . uniqid('install_'));
 
