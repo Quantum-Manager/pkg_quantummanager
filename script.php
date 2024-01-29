@@ -29,7 +29,7 @@ class pkg_QuantummanagerInstallerScript
 	 *
 	 * @since  0.0.1
 	 */
-	protected $minimumPhp = '7.1';
+	protected $minimumPhp = '7.4';
 
 	/**
 	 * Minimum Joomla version required to install the extension.
@@ -38,7 +38,7 @@ class pkg_QuantummanagerInstallerScript
 	 *
 	 * @since  0.0.1
 	 */
-	protected $minimumJoomla = '3.9.0';
+	protected $minimumJoomla = '4.0.0';
 
 	/**
 	 * Extensions for php
