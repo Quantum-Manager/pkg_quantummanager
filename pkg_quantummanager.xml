@@ -8,7 +8,7 @@
     <license>GNU General Public License version 3 or later; see license.txt</license>
     <authorEmail>cymbal@delo-design.ru</authorEmail>
     <authorUrl>https://www.norrnext.com</authorUrl>
-    <version>3.0.1</version>
+    <version>3.0.2</version>
     <description>PKG_QUANTUMMANAGER_DESCRIPTION</description>
     <scriptfile>script.php</scriptfile>
     <languages folder="language">
@@ -18,17 +18,18 @@
         <language tag="ru-RU">ru-RU/ru-RU.pkg_quantummanager.sys.ini</language>
     </languages>
     <files>
-        <file type="component" id="com_quantummanager">com_quantummanager.zip</file>
-        <file type="library" id="jinterventionimage">lib_jinterventionimage.zip</file>
-        <file type="library" id="jpel">lib_jpel.zip</file>
-        <file type="plugin" group="system" id="quantummanagermedia">plg_quantummanagermedia.zip</file>
-        <file type="plugin" group="system" id="quantumyoothemepro">plg_quantumyoothemepro.zip</file>
-        <file type="plugin" group="system" id="quantumspbuilder">plg_quantumspbuilder.zip</file>
-        <file type="plugin" group="editors-xtd" id="quantummanagerbutton">plg_quantummanagerbutton.zip</file>
-        <file type="plugin" group="content" id="quantummanagercontent">plg_quantummanagercontent.zip</file>
-        <file type="plugin" group="quickicon" id="quantummanagericon">plg_quantummanagericon.zip</file>
-        <file type="plugin" group="system" id="quantummanagerconfig">plg_quantummanagerconfig.zip</file>
-        <file type="plugin" group="system" id="quantummenus">plg_quantummenus.zip</file>
+        <file type="component" id="com_quantummanager">com_quantummanager</file>
+        <file type="library" id="jinterventionimage">lib_jinterventionimage</file>
+        <file type="library" id="jpel">lib_jpel</file>
+        <file type="library" id="lib_fields">lib_fields</file>
+        <file type="plugin" group="system" id="quantummanagermedia">plg_quantummanagermedia</file>
+        <file type="plugin" group="system" id="quantumyoothemepro">plg_quantumyoothemepro</file>
+        <file type="plugin" group="system" id="quantumspbuilder">plg_quantumspbuilder</file>
+        <file type="plugin" group="editors-xtd" id="quantummanagerbutton">plg_quantummanagerbutton</file>
+        <file type="plugin" group="content" id="quantummanagercontent">plg_quantummanagercontent</file>
+        <file type="plugin" group="quickicon" id="quantummanagericon">plg_quantummanagericon</file>
+        <file type="plugin" group="system" id="quantummanagerconfig">plg_quantummanagerconfig</file>
+        <file type="plugin" group="system" id="quantummenus">plg_quantummenus</file>
     </files>
     <updateservers>
         <server type="extension" priority="1" name="Quantum Manager package">https://hika.su/update/free/pkg_quantummanager.xml</server>
