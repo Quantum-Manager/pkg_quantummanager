@@ -1,141 +1,88 @@
 <?php
-/**
- * @package    quantummanager
- * @author     Dmitry Tsymbal <cymbal@delo-design.ru>
- * @copyright  Copyright © 2019 Delo Design & NorrNext. All rights reserved.
- * @license    GNU General Public License version 3 or later; see license.txt
- * @link       https://www.norrnext.com
- */
-
 
 defined('_JEXEC') or die;
 
-use Joomla\Archive\Archive;
+use Joomla\CMS\Application\AdministratorApplication;
 use Joomla\CMS\Factory;
-use Joomla\CMS\Filesystem\Path;
-use Joomla\CMS\Installer\Adapter\PackageAdapter;
-use Joomla\CMS\Installer\Installer;
 use Joomla\CMS\Installer\InstallerAdapter;
-use Joomla\CMS\Installer\InstallerHelper;
+use Joomla\CMS\Installer\InstallerScriptInterface;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Version;
+use Joomla\Database\DatabaseDriver;
+use Joomla\DI\Container;
+use Joomla\DI\ServiceProviderInterface;
 
-class pkg_QuantummanagerInstallerScript
-{
-	/**
-	 * Minimum PHP version required to install the extension.
-	 *
-	 * @var  string
-	 *
-	 * @since  0.0.1
-	 */
-	protected $minimumPhp = '7.4';
-
-	/**
-	 * Minimum Joomla version required to install the extension.
-	 *
-	 * @var  string
-	 *
-	 * @since  0.0.1
-	 */
-	protected $minimumJoomla = '4.0.0';
-
-	/**
-	 * Extensions for php
-	 * @var array
-	 */
-	protected $extensions = [
-		'fileinfo',
-		'curl',
-		'mbstring',
-	];
-
-	/**
-	 * Method to check compatible.
-	 *
-	 * @param   string            $type    Type of PostFlight action.
-	 * @param   InstallerAdapter  $parent  Parent object calling object.
-	 *
-	 * @return  boolean  Compatible current version or not.
-	 *
-	 * @throws  Exception
-	 *
-	 * @since  0.0.1
-	 */
-	public function preflight($type, $parent)
+return new class () implements ServiceProviderInterface {
+	public function register(Container $container): void
 	{
-		if ($type === 'install')
-		{
-			// Check compatible
-			if (!$this->checkCompatible())
+		$container->set(InstallerScriptInterface::class, new class ($container->get(AdministratorApplication::class)) implements InstallerScriptInterface {
+
+			protected AdministratorApplication $app;
+
+			protected DatabaseDriver $db;
+
+			protected string $minimumJoomla = '4.2.0';
+
+			protected string $minimumPhp = '8.1';
+
+			public function __construct(AdministratorApplication $app)
 			{
-				return false;
+				$this->app = $app;
+				$this->db  = Factory::getContainer()->get('DatabaseDriver');
 			}
 
-		}
-
-	}
-
-	/**
-	 * Method to check compatible.
-	 *
-	 * @return  bool True if compatible.
-	 *
-	 * @throws  Exception
-	 *
-	 * @since  __DEPLOY_VERSION__
-	 */
-	protected function checkCompatible()
-	{
-		// Check old Joomla
-		if (!class_exists('Joomla\CMS\Version'))
-		{
-			Factory::getApplication()->enqueueMessage(Text::sprintf('PKG_QUANTUMMANAGER_ERROR_COMPATIBLE_JOOMLA',
-				$this->minimumJoomla), 'error');
-
-			return false;
-		}
-
-		$app      = Factory::getApplication();
-		$jversion = new Version();
-
-		// Check PHP
-		if (!(version_compare(PHP_VERSION, $this->minimumPhp) >= 0))
-		{
-			$app->enqueueMessage(Text::sprintf('PKG_QUANTUMMANAGER_ERROR_COMPATIBLE_PHP', $this->minimumPhp),
-				'error');
-
-			return false;
-		}
-
-		// Check joomla version
-		if (!$jversion->isCompatible($this->minimumJoomla))
-		{
-			$app->enqueueMessage(Text::sprintf('PKG_QUANTUMMANAGER_ERROR_COMPATIBLE_JOOMLA', $this->minimumJoomla),
-				'error');
-
-			return false;
-		}
-
-		//Check extension
-		$extensionsNotLoaded = [];
-		foreach ($this->extensions as $extension)
-		{
-			if (!extension_loaded($extension))
+			public function preflight(string $type, InstallerAdapter $adapter): bool
 			{
-				$extensionsNotLoaded[] = $extension;
+				if (!$this->checkCompatible())
+				{
+					return false;
+				}
+
+				return true;
 			}
-		}
 
-		if (count($extensionsNotLoaded))
-		{
-			$app->enqueueMessage(Text::sprintf('PKG_QUANTUMMANAGER_ERROR_EXTENSIONS', implode(',', $extensionsNotLoaded)),
-				'error');
+			protected function checkCompatible(): bool
+			{
+				$app = Factory::getApplication();
 
-			return false;
-		}
+				if (!(new Version())->isCompatible($this->minimumJoomla))
+				{
+					$app->enqueueMessage(Text::sprintf('PKG_QUANTUMMANAGER_ERROR_COMPATIBLE_JOOMLA', $this->minimumJoomla),
+						'error');
 
-		return true;
+					return false;
+				}
+
+				if (!(version_compare(PHP_VERSION, $this->minimumPhp) >= 0))
+				{
+					$app->enqueueMessage(Text::sprintf('PKG_QUANTUMMANAGER_ERROR_COMPATIBLE_PHP', $this->minimumPhp),
+						'error');
+
+					return false;
+				}
+
+				return true;
+			}
+
+			public function install(InstallerAdapter $adapter): bool
+			{
+				return true;
+			}
+
+			public function update(InstallerAdapter $adapter): bool
+			{
+				return true;
+			}
+
+			public function uninstall(InstallerAdapter $adapter): bool
+			{
+				return true;
+			}
+
+			public function postflight(string $type, InstallerAdapter $adapter): bool
+			{
+				return true;
+			}
+		});
 	}
-
-}
+};
